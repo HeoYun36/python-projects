@@ -24,6 +24,7 @@ screen.onkey(l_paddle.go_down, "s")
 
 
 game_is_on = True
+last_paddle_hit_time = time.time()
 
 while game_is_on:
     time.sleep(ball.move_speed)
@@ -35,8 +36,12 @@ while game_is_on:
         ball.bounce_y()
 
     # Detect collision with paddle
+
     if (ball.distance(r_paddle) < 50 and ball.xcor() > 320) or (ball.distance(l_paddle) < 50 and ball.xcor() < -320):
-        ball.bounce_x()
+        current_time = time.time()
+        if current_time - last_paddle_hit_time > 0.1:  # Adjust this time threshold as needed
+            ball.bounce_x()
+            last_paddle_hit_time = current_time
 
     # Detect R paddle misses
     if ball.xcor() > 380:
